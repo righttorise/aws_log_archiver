@@ -13,8 +13,8 @@ module AwsLogArchiver
 
 
   def self.archive!(args = {})
-    key_prefix        = args[:key_prefix] || raise "Missing key_prefix"
-    regex_to_logfiles = args[:regex_to_logfiles] || raise "Missing regex_to_logfiles"
+    key_prefix        = args[:key_prefix] || raise("Missing key_prefix")
+    regex_to_logfiles = args[:regex_to_logfiles] || raise("Missing regex_to_logfiles")
 
     raise "Missing ENV['AWS_LOG_ARCHIVER_ACCESS_KEY_ID']" unless ENV['AWS_LOG_ARCHIVER_ACCESS_KEY_ID']
     raise "Missing ENV['AWS_LOG_ARCHIVER_SECRET_ACCESS_KEY']" unless ENV['AWS_LOG_ARCHIVER_SECRET_ACCESS_KEY']
