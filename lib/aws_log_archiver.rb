@@ -25,14 +25,14 @@ module AwsLogArchiver
 
     regex_to_logfiles = case ENV['RACK_ENV']
                         when 'test' then File.join(File.dirname(__FILE__), "../spec/logs/#{ENV['RACK_ENV']}.*")
-                        else; "$STACK_PATH/log/archive/#{ENV['RACK_ENV']}.*"
+                        else; "log/archive/#{ENV['RACK_ENV']}.*"
                         end
 
     logfiles     = Dir.glob(regex_to_logfiles)
     logfile_path = logfiles.sort.last
 
     log_file = File.read(logfile_path)
-    key      = File.basename(logfile_path.gsub(/production/, key_prefix))
+    key      = File.basename(logfile_path.gsub(/#{ENV['RACK_ENV']}/, key_prefix))
     bucket   = 'ge-shrub/log/rtr'
     
     s3.put_object bucket: bucket, key: key, body: log_file
