@@ -6,7 +6,7 @@ require 'aws_log_archiver/version'
 Gem::Specification.new do |spec|
   spec.name          = "aws_log_archiver"
   spec.version       = AwsLogArchiver::VERSION
-  spec.authors       = ["TODO: Write your name"]
+  spec.authors       = ["Ethan Czahor"]
   spec.email         = ["TODO: Write your email address"]
   spec.summary       = %q{TODO: Write a short summary. Required.}
   spec.description   = %q{TODO: Write a longer description. Optional.}
