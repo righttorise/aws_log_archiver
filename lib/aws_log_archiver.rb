@@ -14,7 +14,6 @@ module AwsLogArchiver
 
   def self.archive!(args = {})
     key_prefix        = args[:key_prefix] || raise("Missing key_prefix")
-    regex_to_logfiles = args[:regex_to_logfiles] || raise("Missing regex_to_logfiles")
 
     raise "Missing ENV['AWS_LOG_ARCHIVER_ACCESS_KEY_ID']" unless ENV['AWS_LOG_ARCHIVER_ACCESS_KEY_ID']
     raise "Missing ENV['AWS_LOG_ARCHIVER_SECRET_ACCESS_KEY']" unless ENV['AWS_LOG_ARCHIVER_SECRET_ACCESS_KEY']
@@ -23,6 +22,11 @@ module AwsLogArchiver
 
     credentials = Aws::Credentials.new(ENV['AWS_LOG_ARCHIVER_ACCESS_KEY_ID'], ENV['AWS_LOG_ARCHIVER_SECRET_ACCESS_KEY'])
     s3          = Aws::S3::Client.new(credentials: credentials)
+
+    regex_to_logfiles = case ENV['RACK_ENV']
+                        when 'test' then File.join(File.dirname(__FILE__), "../spec/logs/#{ENV['RACK_ENV']}.*")
+                        else; "$STACK_PATH/log/archive/#{ENV['RACK_ENV']}.*"
+                        end
 
     logfiles     = Dir.glob(regex_to_logfiles)
     logfile_path = logfiles.sort.last
